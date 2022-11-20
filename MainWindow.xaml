@@ -1,0 +1,162 @@
+﻿<Window x:Class="BestCalculatorEver.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BestCalculatorEver"
+
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="400">
+
+
+    <Window.Resources>
+        <local:MainViewModel x:Key="Model"></local:MainViewModel>   
+
+        <Style x:Key="Input" TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="FontSize" Value="60"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="12 8"/>
+            <Setter Property="CaretBrush" Value="White"/>
+        </Style>
+        
+        <Style x:Key="Button" TargetType="Button">
+            <Setter Property="Margin" Value="6"/>
+            <Setter Property="Background" Value="#313131"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="42"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="50" 
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="Command" 
+                    Value="{Binding  OnButtonClickCommand}"/>
+            <Setter Property="CommandParameter" 
+                    Value="{Binding RelativeSource={RelativeSource Self}, 
+                                    Path=Content}"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#616161"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Foreground" Value="#616161"/>
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+
+
+        </Style>
+
+        <Style x:Key="RightButton" TargetType="Button" 
+               BasedOn="{StaticResource Button}">
+            <Setter Property="Background" Value="#f69906"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#f6c270"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Foreground" Value="#f69906"/>
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="TopButton" TargetType="Button" 
+               BasedOn="{StaticResource Button}">
+            <Setter Property="Background" Value="#9f9f9f"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#BfBfBf"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Foreground" Value="#9f9f9f"/>
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+    </Window.Resources>
+
+    <Grid Background="Black" DataContext="{StaticResource Model}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+
+        <TextBox Style="{StaticResource Input}" 
+                 Text="{Binding Display}"
+                 Grid.Row="0" 
+                 Grid.Column="0" 
+                 Grid.ColumnSpan="4"/>
+
+        <Button Content="AC" Style="{StaticResource TopButton}" 
+                Grid.Row="1" Grid.Column="0"/>
+        <Button Content="("  Style="{StaticResource TopButton}" 
+                Grid.Row="1" Grid.Column="1"/>
+        <Button Content=")"  Style="{StaticResource TopButton}" 
+                Grid.Row="1" Grid.Column="2"/>
+        <Button Content="/"  Style="{StaticResource RightButton}" 
+                Grid.Row="1" Grid.Column="3"/>
+
+        <Button Content="7" Style="{StaticResource Button}" 
+                Grid.Row="2" Grid.Column="0"/>
+        <Button Content="8" Style="{StaticResource Button}" 
+                Grid.Row="2" Grid.Column="1"/>
+        <Button Content="9" Style="{StaticResource Button}" 
+                Grid.Row="2" Grid.Column="2"/>
+        <Button Content="*" Style="{StaticResource RightButton}" 
+                Grid.Row="2" Grid.Column="3"/>
+
+        <Button Content="4" Style="{StaticResource Button}" 
+                Grid.Row="3" Grid.Column="0"/>
+        <Button Content="5" Style="{StaticResource Button}" 
+                Grid.Row="3" Grid.Column="1"/>
+        <Button Content="6" Style="{StaticResource Button}" 
+                Grid.Row="3" Grid.Column="2"/>
+        <Button Content="-" Style="{StaticResource RightButton}" 
+                Grid.Row="3" Grid.Column="3"/>
+
+        <Button Content="1" Style="{StaticResource Button}" 
+                Grid.Row="4" Grid.Column="0"/>
+        <Button Content="2" Style="{StaticResource Button}" 
+                Grid.Row="4" Grid.Column="1"/>
+        <Button Content="3" Style="{StaticResource Button}" 
+                Grid.Row="4" Grid.Column="2"/>
+        <Button Content="+" Style="{StaticResource RightButton}" 
+                Grid.Row="4" Grid.Column="3"/>
+
+        <Button Content="0" Style="{StaticResource Button}" 
+                Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <Button Content="." Style="{StaticResource Button}" 
+                Grid.Row="5" Grid.Column="2"/>
+        <Button Content="=" Style="{StaticResource RightButton}" 
+                Grid.Row="5" Grid.Column="3"/>
+
+
+    </Grid>
+</Window>
