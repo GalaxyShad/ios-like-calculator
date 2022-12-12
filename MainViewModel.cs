@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -30,8 +31,18 @@ namespace BestCalculatorEver
 
         private readonly MathExpression _mathParser = new();
 
+        private IMemory _memory;
+
+        public IEnumerable<double> MemoryList => _memory.ValueList;
+
         public MainViewModel()
         {
+
+            _memory = new RamMemory();
+
+            //for (var i = 0; i < 30; i++)
+            //    _memory.Add(i);
+
             OnButtonClickCommand = new RelayCommand<string>((action =>
             {
                 switch (action)
@@ -41,6 +52,9 @@ namespace BestCalculatorEver
                         break;
                     case "=":
                         DoSomeMath();
+                        break;
+                    case "MS":
+                        _memory.Add(_mathParser.Parse(Display));
                         break;
                     default:
                         Display += action;

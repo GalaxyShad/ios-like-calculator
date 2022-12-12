@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BestCalculatorEver"
 
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="400">
+        Title="MainWindow" Height="800" Width="800">
 
 
     <Window.Resources>
@@ -89,74 +89,130 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="MemButton" TargetType="Button" 
+               BasedOn="{StaticResource Button}">
+            <Setter Property="FontSize" Value="30"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="30" 
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+           
+        </Style>
+
 
     </Window.Resources>
 
     <Grid Background="Black" DataContext="{StaticResource Model}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="400"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="100"/>
-        </Grid.RowDefinitions>
 
-        <TextBox Style="{StaticResource Input}" 
-                 Text="{Binding Display}"
-                 Grid.Row="0" 
-                 Grid.Column="0" 
-                 Grid.ColumnSpan="4"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="70"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
 
-        <Button Content="AC" Style="{StaticResource TopButton}" 
-                Grid.Row="1" Grid.Column="0"/>
-        <Button Content="("  Style="{StaticResource TopButton}" 
-                Grid.Row="1" Grid.Column="1"/>
-        <Button Content=")"  Style="{StaticResource TopButton}" 
-                Grid.Row="1" Grid.Column="2"/>
-        <Button Content="/"  Style="{StaticResource RightButton}" 
-                Grid.Row="1" Grid.Column="3"/>
+            <TextBox Style="{StaticResource Input}" 
+                     Text="{Binding Display}"
+                     Grid.Row="0" 
+                     Grid.Column="0" 
+                     Grid.ColumnSpan="4"/>
 
-        <Button Content="7" Style="{StaticResource Button}" 
-                Grid.Row="2" Grid.Column="0"/>
-        <Button Content="8" Style="{StaticResource Button}" 
-                Grid.Row="2" Grid.Column="1"/>
-        <Button Content="9" Style="{StaticResource Button}" 
-                Grid.Row="2" Grid.Column="2"/>
-        <Button Content="*" Style="{StaticResource RightButton}" 
-                Grid.Row="2" Grid.Column="3"/>
+            <Button Content="MR" Style="{StaticResource MemButton}" 
+                    Grid.Row="1" Grid.Column="0"/>
+            <Button Content="M+"  Style="{StaticResource MemButton}" 
+                    Grid.Row="1" Grid.Column="1"/>
+            <Button Content="M-"  Style="{StaticResource MemButton}" 
+                    Grid.Row="1" Grid.Column="2"/>
+            <Button Content="MS"  Style="{StaticResource MemButton}" 
+                    Grid.Row="1" Grid.Column="3"/>
 
-        <Button Content="4" Style="{StaticResource Button}" 
-                Grid.Row="3" Grid.Column="0"/>
-        <Button Content="5" Style="{StaticResource Button}" 
-                Grid.Row="3" Grid.Column="1"/>
-        <Button Content="6" Style="{StaticResource Button}" 
-                Grid.Row="3" Grid.Column="2"/>
-        <Button Content="-" Style="{StaticResource RightButton}" 
-                Grid.Row="3" Grid.Column="3"/>
+            <Button Content="AC" Style="{StaticResource TopButton}" 
+                    Grid.Row="2" Grid.Column="0"/>
+            <Button Content="("  Style="{StaticResource TopButton}" 
+                    Grid.Row="2" Grid.Column="1"/>
+            <Button Content=")"  Style="{StaticResource TopButton}" 
+                    Grid.Row="2" Grid.Column="2"/>
+            <Button Content="/"  Style="{StaticResource RightButton}" 
+                    Grid.Row="2" Grid.Column="3"/>
 
-        <Button Content="1" Style="{StaticResource Button}" 
-                Grid.Row="4" Grid.Column="0"/>
-        <Button Content="2" Style="{StaticResource Button}" 
-                Grid.Row="4" Grid.Column="1"/>
-        <Button Content="3" Style="{StaticResource Button}" 
-                Grid.Row="4" Grid.Column="2"/>
-        <Button Content="+" Style="{StaticResource RightButton}" 
-                Grid.Row="4" Grid.Column="3"/>
+            <Button Content="7" Style="{StaticResource Button}" 
+                    Grid.Row="3" Grid.Column="0"/>
+            <Button Content="8" Style="{StaticResource Button}" 
+                    Grid.Row="3" Grid.Column="1"/>
+            <Button Content="9" Style="{StaticResource Button}" 
+                    Grid.Row="3" Grid.Column="2"/>
+            <Button Content="*" Style="{StaticResource RightButton}" 
+                    Grid.Row="3" Grid.Column="3"/>
 
-        <Button Content="0" Style="{StaticResource Button}" 
-                Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <Button Content="." Style="{StaticResource Button}" 
-                Grid.Row="5" Grid.Column="2"/>
-        <Button Content="=" Style="{StaticResource RightButton}" 
-                Grid.Row="5" Grid.Column="3"/>
+            <Button Content="4" Style="{StaticResource Button}" 
+                    Grid.Row="4" Grid.Column="0"/>
+            <Button Content="5" Style="{StaticResource Button}" 
+                    Grid.Row="4" Grid.Column="1"/>
+            <Button Content="6" Style="{StaticResource Button}" 
+                    Grid.Row="4" Grid.Column="2"/>
+            <Button Content="-" Style="{StaticResource RightButton}" 
+                    Grid.Row="4" Grid.Column="3"/>
 
+            <Button Content="1" Style="{StaticResource Button}" 
+                    Grid.Row="5" Grid.Column="0"/>
+            <Button Content="2" Style="{StaticResource Button}" 
+                    Grid.Row="5" Grid.Column="1"/>
+            <Button Content="3" Style="{StaticResource Button}" 
+                    Grid.Row="5" Grid.Column="2"/>
+            <Button Content="+" Style="{StaticResource RightButton}" 
+                    Grid.Row="5" Grid.Column="3"/>
 
+            <Button Content="0" Style="{StaticResource Button}" 
+                    Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"/>
+            <Button Content="." Style="{StaticResource Button}" 
+                    Grid.Row="6" Grid.Column="2"/>
+            <Button Content="=" Style="{StaticResource RightButton}" 
+                    Grid.Row="6" Grid.Column="3"/>
+
+        </Grid>
+        <ListBox Grid.Column="1"  Name="List"  
+                 ItemsSource="{Binding MemoryList}"
+                 Background="#0f0f0f">
+                
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Content="{Binding}" 
+                                Grid.Column="0"/>
+                        <Button Content="R" 
+                                Grid.Column="1"/>
+
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>
