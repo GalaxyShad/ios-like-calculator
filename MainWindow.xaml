@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:BestCalculatorEver"
 
         mc:Ignorable="d"
+        
         Title="MainWindow" Height="800" Width="800">
-
+        // meow! приходите на концерт 30 декабря
 
     <Window.Resources>
         <local:MainViewModel x:Key="Model"></local:MainViewModel>   
@@ -140,7 +141,7 @@
                      Grid.Column="0" 
                      Grid.ColumnSpan="4"/>
 
-            <Button Content="MR" Style="{StaticResource MemButton}" 
+            <Button Content="MC" Style="{StaticResource MemButton}" 
                     Grid.Row="1" Grid.Column="0"/>
             <Button Content="M+"  Style="{StaticResource MemButton}" 
                     Grid.Row="1" Grid.Column="1"/>
@@ -193,26 +194,31 @@
                     Grid.Row="6" Grid.Column="3"/>
 
         </Grid>
-        <ListBox Grid.Column="1"  Name="List"  
+        <ItemsControl Grid.Column="1"  Name="List"  
                  ItemsSource="{Binding MemoryList}"
                  Background="#0f0f0f">
-                
-            <ListBox.ItemTemplate>
+
+            <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
 
+                        
                         <Button Content="{Binding}" 
                                 Grid.Column="0"/>
+                        <TextBlock Text="asd" Grid.Column="0" HorizontalAlignment="Stretch"/>
                         <Button Content="R" 
+                                Command="{Binding RelativeSource={RelativeSource AncestorType=local:MainViewModel}, Path=OnRemoveItem}"
+                                CommandParameter="0"
                                 Grid.Column="1"/>
+
 
                     </Grid>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Window>

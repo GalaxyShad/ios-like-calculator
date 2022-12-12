@@ -28,20 +28,20 @@ namespace BestCalculatorEver
         }
 
         public RelayCommand<string> OnButtonClickCommand { get; }
+        public RelayCommand<string> OnRemoveItem { get; }
 
         private readonly MathExpression _mathParser = new();
 
-        private IMemory _memory;
+        private readonly IMemory _memory;
 
-        public IEnumerable<double> MemoryList => _memory.ValueList;
+        public ObservableCollection<double> MemoryList => new (_memory.ValueList);
 
         public MainViewModel()
         {
 
-            _memory = new RamMemory();
-
-            //for (var i = 0; i < 30; i++)
-            //    _memory.Add(i);
+            //_memory = new RamMemory();
+            _memory = new DataBaseMemory();
+            //_memory = new FileMemory();
 
             OnButtonClickCommand = new RelayCommand<string>((action =>
             {
@@ -55,12 +55,23 @@ namespace BestCalculatorEver
                         break;
                     case "MS":
                         _memory.Add(_mathParser.Parse(Display));
+                        OnPropertyChanged(nameof(MemoryList));
+                        break;
+                    case "MC":
+                        _memory.Clear();
+                        OnPropertyChanged(nameof(MemoryList));
                         break;
                     default:
                         Display += action;
                         break;
                 }
             }));
+
+            //OnRemoveItem = new RelayCommand<int>((element) =>
+            //{
+                //_memory.Remove(_memory.ValueList.);
+                //OnPropertyChanged(nameof(MemoryList));
+            //});
         }
 
         private void DoSomeMath()
