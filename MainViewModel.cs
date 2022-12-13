@@ -14,7 +14,7 @@ namespace BestCalculatorEver
 {
     internal class MainViewModel : INotifyPropertyChanged
     {
-        private string _display = "";
+        private string _display = string.Empty;
 
         public string Display
         {
@@ -27,51 +27,97 @@ namespace BestCalculatorEver
             }
         }
 
+        public string CurrentMemoryMode => _memory.GetType().Name;
+
         public RelayCommand<string> OnButtonClickCommand { get; }
-        public RelayCommand<string> OnRemoveItem { get; }
+        public RelayCommand<int> OnRemoveItem { get; }
+        public RelayCommand<int> OnGetItem { get; }
+        public RelayCommand OnChangeMemoryMode { get; }
 
         private readonly MathExpression _mathParser = new();
 
-        private readonly IMemory _memory;
+        private IMemory _memory;
 
-        public ObservableCollection<double> MemoryList => new (_memory.ValueList);
+        private readonly IMemory[] _memoryList =
+        {
+            new RamMemory(),
+            new DataBaseMemory(),
+            new FileMemory()
+        };
+
+        private int _curMemory = 0;
+
+        public ObservableCollection<Value> MemoryList => new (_memory.ValueList);
 
         public MainViewModel()
         {
+            _memory = _memoryList[_curMemory];
 
-            //_memory = new RamMemory();
-            _memory = new DataBaseMemory();
-            //_memory = new FileMemory();
-
-            OnButtonClickCommand = new RelayCommand<string>((action =>
+            OnButtonClickCommand = new RelayCommand<string>(OnOnButtonClickCommandHandle);
+            OnRemoveItem = new RelayCommand<int>(OnRemoveItemHandle);
+            OnGetItem = new RelayCommand<int>(ExtractFromMemory);
+            OnChangeMemoryMode = new RelayCommand(() =>
             {
-                switch (action)
-                {
-                    case "AC": 
-                        Display = "";
-                        break;
-                    case "=":
-                        DoSomeMath();
-                        break;
-                    case "MS":
-                        _memory.Add(_mathParser.Parse(Display));
-                        OnPropertyChanged(nameof(MemoryList));
-                        break;
-                    case "MC":
-                        _memory.Clear();
-                        OnPropertyChanged(nameof(MemoryList));
-                        break;
-                    default:
-                        Display += action;
-                        break;
-                }
-            }));
+                _curMemory++;
+                if (_curMemory > 2) _curMemory = 0;
+                _memory = _memoryList[_curMemory];
 
-            //OnRemoveItem = new RelayCommand<int>((element) =>
-            //{
-                //_memory.Remove(_memory.ValueList.);
-                //OnPropertyChanged(nameof(MemoryList));
-            //});
+                OnPropertyChanged(nameof(CurrentMemoryMode));
+                OnPropertyChanged(nameof(MemoryList));
+            });
+        }
+
+        private void OnOnButtonClickCommandHandle(string? action)
+        {
+            switch (action)
+            {
+                case "AC":
+                    Display = string.Empty;
+                    break;
+                case "=":
+                    DoSomeMath();
+                    break;
+                case "MS":
+                    SendToMemory();
+                    break;
+                case "MC":
+                    ClearMemory();
+                    break;
+                default:
+                    Display += action;
+                    break;
+            }
+        }
+
+        private void SendToMemory()
+        {
+            try
+            {
+                _memory.Add(double.Parse(Display, CultureInfo.InvariantCulture));
+                OnPropertyChanged(nameof(MemoryList));
+                Display = string.Empty;
+            }
+            catch
+            {
+                Display = "Ошибка";
+            }
+        }
+
+        private void ExtractFromMemory(int id)
+        {
+            Display += _memory.GetValue(id).ToString(CultureInfo.InvariantCulture);
+        }
+
+        private void ClearMemory()
+        {
+            _memory.Clear();
+            OnPropertyChanged(nameof(MemoryList));
+        }
+
+        private void OnRemoveItemHandle(int id)
+        {
+            _memory.Remove(id);
+            OnPropertyChanged(nameof(MemoryList));
         }
 
         private void DoSomeMath()

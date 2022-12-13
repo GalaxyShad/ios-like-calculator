@@ -14,7 +14,7 @@ namespace BestCalculatorEver
 {
     public interface IMemory
     {
-        public IEnumerable<double> ValueList { get; }
+        public IEnumerable<Value> ValueList { get; }
         public void Add(double value);
         public void Remove(int index);
         public double GetValue(int index);
@@ -24,9 +24,10 @@ namespace BestCalculatorEver
 
     public class RamMemory : IMemory
     {
-        public IEnumerable<double> ValueList => _valueList;
+        public IEnumerable<Value> ValueList => 
+            _valueList.Select((x, i) => new Value { Id = i, Body = x });
 
-        private List<double> _valueList = new ();
+        private readonly List<double> _valueList = new ();
 
         public void Add(double value)
         {
@@ -51,15 +52,14 @@ namespace BestCalculatorEver
 
     public class FileMemory : IMemory
     {
-        public IEnumerable<double> ValueList {
+        public IEnumerable<Value> ValueList {
             get
             {
                 Load();
-                return _valueList;
+                return _valueList.Select((x, i) => new Value { Id = i, Body = x });
             }
         }
 
-        //private List<double> _valueList = new();
         private List<double> _valueList = new();
 
         public FileMemory()
@@ -115,22 +115,7 @@ namespace BestCalculatorEver
 
     public class DataBaseMemory : IMemory
     {
-        public IEnumerable<double> ValueList
-        {
-            get
-            {
-                var list = new List<double> ();
-                foreach (var dbValue in db.Values.ToList())
-                {
-                    list.Add(dbValue.Body);
-                }
-
-                return list;
-
-                // TODO Распаковка в лист
-            }
-        }
- 
+        public IEnumerable<Value> ValueList => db.Values.ToList();
 
         private ApplicationContext db = new ();
         public DataBaseMemory()
@@ -141,19 +126,20 @@ namespace BestCalculatorEver
 
         public void Add(double value)
         {
-            db.Values.Add(new DbValue() { Body = value });
+            db.Values.Add(new Value() { Body = value });
             db.SaveChanges();
         }
 
         public void Remove(int index)
         {
-            db.Values.Remove(db.Values.Find(index));
+            var row = db.Values.Find(index);
+            db.Values.Remove(row);
             db.SaveChanges();
         }
 
         public double GetValue(int index)
         {
-            return db.Values.Find(index).Body;
+            return db.Values.Find(index)!.Body;
         }
 
         public void Clear()
@@ -168,7 +154,7 @@ namespace BestCalculatorEver
     }
 
     [Table("VALUES")]
-    public class DbValue
+    public class Value
     {
         public int Id { get; set; }
         public double Body { get; set; }
@@ -176,7 +162,7 @@ namespace BestCalculatorEver
 
     public class ApplicationContext : DbContext
     {
-        public DbSet<DbValue> Values { get; set; } = null!;
+        public DbSet<Value> Values { get; set; } = null!;
 
         private const string dbFileName = "helloapp.db";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
